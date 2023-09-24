@@ -1,0 +1,32 @@
+<div class="container mx-auto">
+  <div class="row justify-content-md-center">
+    <div class="col-6">
+      <div class="card" style="width: 30rem;"> <!-- Увеличил ширину таблицы -->
+        <div class="card-body">
+          <h5 class="card-title">Backend response</h5>
+
+          <div class="mb-3">
+            <input type="file" (change)="onFileSelected($event)">
+            <button (click)="uploadFile()" [disabled]="!selectedFile">Загрузить файл</button>
+          </div>
+
+          <table style="width: 100%;">
+            <tbody>
+            <tr *ngFor="let item of data">
+              <td style="width: 100%;">
+                <a download style="float: left;">{{ item.fileName }}</a>
+                <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deleteFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: right;">
+                <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: right;">
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
