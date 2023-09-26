@@ -3,11 +3,11 @@
     <div class="col-6">
       <div class="card" style="width: 30rem;"> <!-- Увеличил ширину таблицы -->
         <div class="card-body">
-          <h5 class="card-title">Backend response</h5>
+          <h5 class="card-title">FILES:</h5>
 
           <div class="mb-3">
             <input type="file" (change)="onFileSelected($event)">
-            <button (click)="uploadFile()" [disabled]="!selectedFile">Загрузить файл</button>
+            <button (click)="uploadFile()" [disabled]="!selectedFile">Load file</button>
           </div>
 
           <table style="width: 100%;">
