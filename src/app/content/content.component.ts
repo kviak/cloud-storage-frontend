@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AxiosService } from '../axios.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-content',
@@ -7,12 +8,15 @@ import { AxiosService } from '../axios.service';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent {
-	componentToShow: string = "welcome";
+	componentToShow: string = "login";
 
-	constructor(private axiosService: AxiosService) { }
-
-	showComponent(componentToShow: string): void {
-    this.componentToShow = componentToShow;
+	constructor(private axiosService: AxiosService, private cookieService: CookieService) {
+    const jwtToken = this.cookieService.get('jwtToken');
+    if (jwtToken) {
+      this.componentToShow="messages"
+    } else {
+      this.componentToShow="login"
+    }
   }
 
 	onLogin(input: any): void {
@@ -24,12 +28,13 @@ export class ContentComponent {
 		        password: input.password
 		    }).then(
 		    response => {
+          this.cookieService.set('jwtToken', response.data.token);
 		        this.axiosService.setAuthToken(response.data.token);
 		        this.componentToShow = "messages";
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
-		        this.componentToShow = "welcome";
+		        this.componentToShow = "login";
 		    }
 		);
 	}
@@ -46,11 +51,11 @@ export class ContentComponent {
 		    }).then(
 		    response => {
 		        this.axiosService.setAuthToken(response.data.token);
-		        this.componentToShow = "messages";
+		        this.componentToShow = "login";
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
-		        this.componentToShow = "welcome";
+		        this.componentToShow = "registration";
 		    }
 		);
 	}

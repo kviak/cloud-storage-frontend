@@ -1,7 +1,7 @@
 <div class="container mx-auto">
   <div class="row justify-content-md-center">
-    <div class="col-6">
-      <div class="card" style="width: 30rem;"> <!-- Увеличил ширину таблицы -->
+    <div class="col-8"> <!-- Увеличили ширину этой колонки -->
+      <div class="card" style="width: 50rem; height: 60rem;"> <!-- Увеличили ширину карточки -->
         <div class="card-body">
           <h5 class="card-title">FILES:</h5>
 
@@ -10,22 +10,48 @@
             <button (click)="uploadFile()" [disabled]="!selectedFile">Load file</button>
           </div>
 
-          <table style="width: 100%;">
+          <table class="table">
             <tbody>
-            <tr *ngFor="let item of data">
-              <td style="width: 100%;">
-                <a download style="float: left;">{{ item.fileName }}</a>
-                <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deleteFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: right;">
-                <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: right;">
+            <ng-container *ngFor="let item of data; let i = index">
+              <!-- Выводим каждый файл в новой ячейке -->
+              <td>
+                <div style="width: 140px; text-align: center; height: 140px; background: dodgerblue; border-radius: 24px">
+
+                <ng-container *ngIf="item.fileName.endsWith('.jpg') || item.fileName.endsWith('.png') || item.fileName.endsWith('.jpeg')">
+                  <img src="assets/images/goida.png" alt="Image Icon" height="40px" width="40px">
+                </ng-container>
+                <ng-container *ngIf="item.fileName.endsWith('.mp3')">
+                  <img src="assets/images/Voice.svg" alt="Music Icon" height="40px" width="40px">
+                </ng-container>
+                <ng-container *ngIf="!item.fileName.endsWith('.jpg') && !item.fileName.endsWith('.mp3') && !item.fileName.endsWith('.jpeg') && !item.fileName.endsWith('.png')">
+                  <img src="assets/images/Paper.svg" alt="File Icon" height="40px" width="40px">
+                </ng-container>
+                  <div style="width: 130px; height: 40px;">
+                    <span style="max-width: 140px; max-height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">{{ item.fileName }}</span>
+                  </div>
+
+                  <div style="width: 126px; height: 35px; background: white; border-radius: 24px; margin-top: 12px;">
+                    <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deleteFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: left; margin-left: 10px; margin-top: 3px">
+                    <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="31" width="31" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px">
+                    <img [src]="'assets/images/edit.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="26" width="26" style="cursor: pointer; float: right; margin-top: 4px">
+                  </div>
+                </div>
               </td>
-            </tr>
+              <!-- Закрываем строку и начинаем новую строку после каждого четвертого элемента -->
+              <ng-container *ngIf="(i + 1) % 5 === 0">
+                <tr></tr>
+              </ng-container>
+            </ng-container>
             </tbody>
           </table>
+
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 
 

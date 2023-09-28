@@ -3,6 +3,7 @@ import { AxiosService } from '../axios.service';
 import {UserFileDto} from "../dto/user-file-dto";
 import { environment } from 'src/app/enviroment/enviroment'
 import axios from "axios";
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-auth-content',
@@ -13,7 +14,7 @@ export class AuthContentComponent {
   data: UserFileDto[] = [];
 
 
-  constructor(private axiosService: AxiosService) {}
+  constructor(private axiosService: AxiosService, private cookieService: CookieService) {}
 
   ngOnInit(): void {
     this.axiosService.request(
@@ -25,6 +26,7 @@ export class AuthContentComponent {
         }).catch(
         (error) => {
             if (error.response.status === 401) {
+                this.cookieService.set('JwtToken', '');
                 this.axiosService.setAuthToken(null);
             } else {
                 this.data = error.response.code;
