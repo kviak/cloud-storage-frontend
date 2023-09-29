@@ -4,7 +4,7 @@ import {UserFileDto} from "../dto/user-file-dto";
 import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
 import Swal from 'sweetalert2';
-import {UserPackageDto} from "../dto/UserPackageDto";
+import {UserPackageDto} from "../dto/user.package.dto";
 
 
 @Component({

@@ -1,14 +1,30 @@
-.app-logo {
-  height: 80px;
-}
-
-.app-header {
-  height: 150px;
-  padding: 20px;
-  color: black;
-  text-align: center;
-}
-
 .app-title {
   font-size: 1.5em;
+  font-weight: bold;
+}
+.app-header {
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Настройте отступы по вашему желанию */
+}
+
+.user-info {
+  font-size: 24px;
+  display: flex;
+  font-weight: bold;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-container {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-logo {
+  max-width: 100px; /* Настройте максимальную ширину логотипа по вашему желанию */
 }

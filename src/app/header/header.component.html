@@ -1,4 +1,11 @@
-<header class="app-header" style="background-image: url('assets/images/header.png'); background-repeat: no-repeat">
-	<img src="assets/images/logo.png" class="app-logo" alt="logo"/>
-	<h1 class="app-title">{{pageTitle}}</h1>
+<header class="app-header" style="background-image: url('assets/images/header.png')">
+  <div class="user-info">
+    <span style="color: black;">{{user.userName}} ({{user.roles}})</span>
+    <span style="color: black"></span>
+    <span (click)="goida()" style="color: black; cursor: pointer">Logout</span>
+  </div>
+  <div class="logo-container">
+    <img ngSrc="assets/images/logo.png" class="app-logo" width="64" height="64"/>
+    <h1 class="app-title">{{pageTitle}}</h1>
+  </div>
 </header>
