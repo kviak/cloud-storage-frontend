@@ -1,22 +1,17 @@
-<div class="container mx-auto">
-  <div class="row justify-content-md-center">
-    <div class="col-8"> <!-- Увеличили ширину этой колонки -->
-      <div class="card" style="width: 50rem; height: 60rem;"> <!-- Увеличили ширину карточки -->
-        <div class="card-body">
-          <h5 class="card-title">FILES:</h5>
+<div class="container mx-auto" style="horiz-align: center; width: 100rem; height: 100rem;">
+      <div class="card" style="width: 50rem; margin-left: 250px; border-radius: 25px;">
+        <div class="card-body" style="width: 50rem; background-color: #D7C0C9; backdrop-filter: blur(30px); border-radius: 25px; horiz-align: center">
 
-          <div class="mb-3">
-            <input type="file" (change)="onFileSelected($event)">
-            <button (click)="uploadFile()" [disabled]="!selectedFile">Load file</button>
+          <div style="display: flex; align-items: center;">
+            <img src="assets/images/file.png" alt="Logo" height="40px" width="40px">
+            <h5 class="card-title" style="margin-right: 25px; font-weight: bold;">Files</h5>
           </div>
 
-          <table class="table">
+          <table class="table" style="horiz-align: center; ">
             <tbody>
             <ng-container *ngFor="let item of data; let i = index">
-              <!-- Выводим каждый файл в новой ячейке -->
               <td>
-                <div style="width: 140px; text-align: center; height: 140px; background: dodgerblue; border-radius: 24px">
-
+                <div style="width: 140px; text-align: center; height: 140px; background: lightblue; border-radius: 24px">
                 <ng-container *ngIf="item.fileName.endsWith('.jpg') || item.fileName.endsWith('.png') || item.fileName.endsWith('.jpeg')">
                   <img src="assets/images/goida.png" alt="Image Icon" height="40px" width="40px">
                 </ng-container>
@@ -37,19 +32,25 @@
                   </div>
                 </div>
               </td>
-              <!-- Закрываем строку и начинаем новую строку после каждого четвертого элемента -->
               <ng-container *ngIf="(i + 1) % 5 === 0">
-                <tr></tr>
+                <tr><br></tr>
               </ng-container>
             </ng-container>
+            <td>
+
+              <label for="fileInput" style="cursor: pointer;">
+                <img src="assets/images/add.png" alt="Изображение" width="100" height="100">
+              </label>
+              <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+                <button (click)="uploadFile()" [disabled]="!selectedFile">Load file</button>
+
+
+            </td>
             </tbody>
           </table>
-
         </div>
       </div>
     </div>
-  </div>
-</div>
 
 
 
