@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { AxiosService } from '../axios.service';
 import {UserFileDto} from "../dto/user-file-dto";
-import { environment } from 'src/app/enviroment/enviroment'
+import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
-import { CookieService } from 'ngx-cookie-service';
+import Swal from 'sweetalert2';
+import {UserPackageDto} from "../dto/UserPackageDto";
+
 
 @Component({
   selector: 'app-auth-content',
@@ -12,9 +14,10 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AuthContentComponent {
   data: UserFileDto[] = [];
+  packages: UserPackageDto[] = [];
 
 
-  constructor(private axiosService: AxiosService, private cookieService: CookieService) {}
+  constructor(private axiosService: AxiosService) {}
 
   ngOnInit(): void {
     this.axiosService.request(
@@ -26,13 +29,18 @@ export class AuthContentComponent {
         }).catch(
         (error) => {
             if (error.response.status === 401) {
-                this.cookieService.set('JwtToken', '');
                 this.axiosService.setAuthToken(null);
             } else {
                 this.data = error.response.code;
             }
         }
     );
+
+    this.axiosService.request(
+      "GET",
+      "/folder",
+      {}).then((response) => {
+        this.packages = response.packages;});
   }
 
   async downloadFile(item :UserFileDto): Promise<void> {
@@ -102,6 +110,43 @@ export class AuthContentComponent {
             fileInput.value = '';
           }
         })
+    }
+  }
+
+  showFileInfo(item: any): void {
+    if (item.fileName) {
+      Swal.fire({
+        title: item.fileName,
+        text: `File Name: ${item.fileName}
+               File size: ${item.fileSize}`,
+        icon: 'info'
+      });
+    }
+  }
+
+  deletePackage(item: UserPackageDto) {
+    this.axiosService.request(
+      "DELETE",
+      `/file/${item.packageName}`,
+      {}
+    )
+      .then((response) => {
+        this.ngOnInit();
+      })
+  }
+
+  downloadPackage(item: UserPackageDto) {
+      console.log("DOWNLOAD PACKAGE!")
+  }
+
+  showPackageInfo(item: UserPackageDto) {
+    if (item.packageName) {
+      Swal.fire({
+        title: item.packageName,
+        text: `File Name: ${item.packageName}
+               File size: ${item.packageSize}`,
+        icon: 'info'
+      });
     }
   }
 }

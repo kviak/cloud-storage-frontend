@@ -10,8 +10,8 @@ import { CookieService } from 'ngx-cookie-service';
 export class ContentComponent {
 	componentToShow: string = "login";
 
-	constructor(private axiosService: AxiosService, private cookieService: CookieService) {
-    const jwtToken = this.cookieService.get('jwtToken');
+	constructor(private axiosService: AxiosService) {
+    const jwtToken = this.axiosService.getAuthToken();
     if (jwtToken) {
       this.componentToShow="messages"
     } else {
@@ -28,7 +28,6 @@ export class ContentComponent {
 		        password: input.password
 		    }).then(
 		    response => {
-          this.cookieService.set('jwtToken', response.data.token);
 		        this.axiosService.setAuthToken(response.data.token);
 		        this.componentToShow = "messages";
 		    }).catch(

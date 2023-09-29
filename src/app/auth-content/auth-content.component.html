@@ -1,12 +1,49 @@
 <div class="container mx-auto" style="horiz-align: center; width: 100rem; height: 100rem;">
-      <div class="card" style="width: 50rem; margin-left: 250px; border-radius: 25px;">
-        <div class="card-body" style="width: 50rem; background-color: #D7C0C9; backdrop-filter: blur(30px); border-radius: 25px; horiz-align: center">
 
-          <div style="display: flex; align-items: center;">
-            <img src="assets/images/file.png" alt="Logo" height="40px" width="40px">
-            <h5 class="card-title" style="margin-right: 25px; font-weight: bold;">Files</h5>
+  <div style="display: flex; align-items: center; margin-left: 250px;">
+    <img src="assets/images/folder.png" alt="Logo" height="40px" width="35px">
+    <h5 class="card-title" style="font-size: 35px;  font-weight: bold;">Folders</h5>
+  </div>
+  <div class="card" style="width: 50rem; margin-left: 250px; border-radius: 25px; border: red">
+  <div class="card-body" style="width: 50rem; background-color: #e6e6fa; backdrop-filter: blur(30px); border-radius: 25px; horiz-align: center">
+    <table class="table" style="horiz-align: center; ">
+      <tbody>
+      <ng-container *ngFor="let item of packages; let i = index">
+        <td>
+          <div style="width: 140px; text-align: center; height: 140px; background: lightblue; border-radius: 24px">
+            <ng-container>
+              <img src="assets/images/folder.png" alt="Image Icon" height="40px" width="40px">
+            </ng-container>
+            <div style="width: 130px; height: 40px;">
+              <span style="max-width: 140px; max-height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">{{ item.packageName }}</span>
+            </div>
+
+            <div style="width: 126px; height: 35px; background: white; border-radius: 24px; margin-top: 12px;">
+              <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deletePackage(item)" class="icon" height="30" width="30" style="cursor: pointer; float: left; margin-left: 10px; margin-top: 3px">
+              <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadPackage(item)" class="icon" height="31" width="31" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px;">
+              <img [src]="'assets/images/info.png'" alt="Info" (click)="showPackageInfo(item)" class="icon" height="26" width="26" style="cursor: pointer; float: right; margin-top: 4px">
+            </div>
           </div>
+        </td>
+      </ng-container>
+      <td>
+        <label for="fileInput" style="cursor: pointer;">
+          <img src="assets/images/add_folder.png" alt="Изображение" width="120px" height="120px">
+        </label>
+        <input type="file" (change)="onFileSelected($event)" style="display: none;">
+      </td>
+      </tbody>
+    </table>
+  </div>
+  </div>
 
+  <div style="display: flex; align-items: center; margin-left: 250px;">
+    <img src="assets/images/file.png" alt="Logo" height="40px" width="40px">
+    <h5 class="card-title" style="font-size: 35px;  font-weight: bold;">Files</h5>
+  </div>
+      <div class="card" style="width: 50rem; margin-left: 250px; border-radius: 25px; border: red">
+
+        <div class="card-body" style="width: 50rem; background-color: #D7C0C9; backdrop-filter: blur(30px); border-radius: 25px; horiz-align: center">
           <table class="table" style="horiz-align: center; ">
             <tbody>
             <ng-container *ngFor="let item of data; let i = index">
@@ -27,8 +64,8 @@
 
                   <div style="width: 126px; height: 35px; background: white; border-radius: 24px; margin-top: 12px;">
                     <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deleteFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: left; margin-left: 10px; margin-top: 3px">
-                    <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="31" width="31" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px">
-                    <img [src]="'assets/images/edit.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="26" width="26" style="cursor: pointer; float: right; margin-top: 4px">
+                    <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="31" width="31" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px;">
+                    <img [src]="'assets/images/info.png'" alt="Info" (click)="showFileInfo(item)" class="icon" height="26" width="26" style="cursor: pointer; float: right; margin-top: 4px">
                   </div>
                 </div>
               </td>
@@ -37,14 +74,10 @@
               </ng-container>
             </ng-container>
             <td>
-
-              <label for="fileInput" style="cursor: pointer;">
-                <img src="assets/images/add.png" alt="Изображение" width="100" height="100">
-              </label>
-              <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
-                <button (click)="uploadFile()" [disabled]="!selectedFile">Load file</button>
-
-
+                <label for="fileInput" style="cursor: pointer;">
+                  <img src="assets/images/add_file.png" alt="Изображение" width="120px" height="120px">
+                </label>
+                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
             </td>
             </tbody>
           </table>
