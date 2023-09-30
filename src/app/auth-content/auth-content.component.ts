@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { AxiosService } from '../axios.service';
 import {UserFileDto} from "../dto/user-file-dto";
-import { environment } from 'src/app/enviroment/enviroment'
+import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
+import Swal from 'sweetalert2';
+import {UserPackageDto} from "../dto/user.package.dto";
+
 
 @Component({
   selector: 'app-auth-content',
@@ -11,6 +14,7 @@ import axios from "axios";
 })
 export class AuthContentComponent {
   data: UserFileDto[] = [];
+  packages: UserPackageDto[] = [];
 
 
   constructor(private axiosService: AxiosService) {}
@@ -31,6 +35,12 @@ export class AuthContentComponent {
             }
         }
     );
+
+    this.axiosService.request(
+      "GET",
+      "/folder",
+      {}).then((response) => {
+        this.packages = response.packages;});
   }
 
   async downloadFile(item :UserFileDto): Promise<void> {
@@ -81,6 +91,7 @@ export class AuthContentComponent {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
       this.selectedFile = inputElement.files[0] as File;
+      this.uploadFile()
     } else {
       this.selectedFile = null;
     }
@@ -100,6 +111,43 @@ export class AuthContentComponent {
             fileInput.value = '';
           }
         })
+    }
+  }
+
+  showFileInfo(item: any): void {
+    if (item.fileName) {
+      Swal.fire({
+        title: item.fileName,
+        text: `File Name: ${item.fileName}
+               File size: ${item.fileSize}`,
+        icon: 'info'
+      });
+    }
+  }
+
+  deletePackage(item: UserPackageDto) {
+    this.axiosService.request(
+      "DELETE",
+      `/file/${item.packageName}`,
+      {}
+    )
+      .then((response) => {
+        this.ngOnInit();
+      })
+  }
+
+  downloadPackage(item: UserPackageDto) {
+      console.log("DOWNLOAD PACKAGE!")
+  }
+
+  showPackageInfo(item: UserPackageDto) {
+    if (item.packageName) {
+      Swal.fire({
+        title: item.packageName,
+        text: `File Name: ${item.packageName}
+               File size: ${item.packageSize}`,
+        icon: 'info'
+      });
     }
   }
 }

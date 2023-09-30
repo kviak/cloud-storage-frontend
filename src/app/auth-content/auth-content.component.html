@@ -1,31 +1,91 @@
-<div class="container mx-auto">
-  <div class="row justify-content-md-center">
-    <div class="col-6">
-      <div class="card" style="width: 30rem;"> <!-- Увеличил ширину таблицы -->
-        <div class="card-body">
-          <h5 class="card-title">Backend response</h5>
+<div class="container mx-auto" style="horiz-align: center; width: 100rem; height: 100rem;">
 
-          <div class="mb-3">
-            <input type="file" (change)="onFileSelected($event)">
-            <button (click)="uploadFile()" [disabled]="!selectedFile">Загрузить файл</button>
+  <div style="display: flex; align-items: center; margin-left: 250px;">
+    <img src="assets/images/folder.png" alt="Logo" height="37px" width="34px">
+    <h5 class="card-title" style="font-size: 35px;  font-weight: bold;">Folders</h5>
+  </div>
+  <div class="card" style="width: 50rem; margin-left: 250px; border-radius: 25px; border: red">
+  <div class="card-body" style="width: 50rem; background-color: #e6e6fa; backdrop-filter: blur(30px); border-radius: 25px; horiz-align: center">
+    <table class="table" style="horiz-align: center; ">
+      <tbody>
+      <ng-container *ngFor="let item of packages; let i = index">
+        <td>
+          <div style="width: 140px; text-align: center; height: 140px; background: lightblue; border-radius: 24px">
+            <ng-container>
+              <img src="assets/images/folder.png" alt="Image Icon" height="40px" width="40px">
+            </ng-container>
+            <div style="width: 130px; height: 40px;">
+              <span style="max-width: 140px; max-height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">{{ item.packageName }}</span>
+            </div>
+
+            <div style="width: 126px; height: 35px; background: white; border-radius: 24px; margin-top: 12px;">
+              <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deletePackage(item)" class="icon" height="25" width="25" style="cursor: pointer; float: left; margin-left: 10px; margin-top: 3px">
+              <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadPackage(item)" class="icon" height="28" width="28" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px;">
+              <img [src]="'assets/images/info.png'" alt="Info" (click)="showPackageInfo(item)" class="icon" height="23" width="23" style="cursor: pointer; float: right; margin-top: 4px">
+            </div>
           </div>
+        </td>
+      </ng-container>
+      <td>
+        <label for="fileInput" style="cursor: pointer;">
+          <img src="assets/images/add_folder.png" alt="Изображение" width="110px" height="120px">
+        </label>
+        <input type="file" (change)="onFileSelected($event)" style="display: none;">
+      </td>
+      </tbody>
+    </table>
+  </div>
+  </div>
 
-          <table style="width: 100%;">
+  <div style="display: flex; align-items: center; margin-left: 250px;">
+    <img src="assets/images/file.png" alt="Logo" height="40px" width="40px">
+    <h5 class="card-title" style="font-size: 35px;  font-weight: bold;">Files</h5>
+  </div>
+      <div class="card" style="width: 50rem; margin-left: 250px; border-radius: 25px; border: red">
+
+        <div class="card-body" style="width: 50rem; background-color: #D7C0C9; backdrop-filter: blur(30px); border-radius: 25px; horiz-align: center">
+          <table class="table" style="horiz-align: center; ">
             <tbody>
-            <tr *ngFor="let item of data">
-              <td style="width: 100%;">
-                <a download style="float: left;">{{ item.fileName }}</a>
-                <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deleteFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: right;">
-                <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="30" width="30" style="cursor: pointer; float: right;">
+            <ng-container *ngFor="let item of data; let i = index">
+              <td>
+                <div style="width: 140px; text-align: center; height: 140px; background: lightblue; border-radius: 24px">
+                <ng-container *ngIf="item.fileName.endsWith('.jpg') || item.fileName.endsWith('.png') || item.fileName.endsWith('.jpeg')">
+                  <img src="assets/images/goida.png" alt="Image Icon" height="40px" width="40px">
+                </ng-container>
+                <ng-container *ngIf="item.fileName.endsWith('.mp3')">
+                  <img src="assets/images/Voice.svg" alt="Music Icon" height="40px" width="40px">
+                </ng-container>
+                <ng-container *ngIf="!item.fileName.endsWith('.jpg') && !item.fileName.endsWith('.mp3') && !item.fileName.endsWith('.jpeg') && !item.fileName.endsWith('.png')">
+                  <img src="assets/images/Paper.svg" alt="File Icon" height="40px" width="40px">
+                </ng-container>
+                  <div style="width: 130px; height: 40px;">
+                    <span style="max-width: 140px; max-height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">{{ item.fileName }}</span>
+                  </div>
+
+                  <div style="width: 126px; height: 35px; background: white; border-radius: 24px; margin-top: 12px;">
+                    <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deleteFile(item)" class="icon" height="25" width="25" style="cursor: pointer; float: left; margin-left: 10px; margin-top: 3px">
+                    <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadFile(item)" class="icon" height="28" width="28" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px;">
+                    <img [src]="'assets/images/info.png'" alt="Info" (click)="showFileInfo(item)" class="icon" height="23" width="23" style="cursor: pointer; float: right; margin-top: 4px">
+                  </div>
+                </div>
               </td>
-            </tr>
+              <ng-container *ngIf="(i + 1) % 5 === 0">
+                <tr><br></tr>
+              </ng-container>
+            </ng-container>
+            <td>
+                <label for="fileInput" style="cursor: pointer;">
+                  <img src="assets/images/add_file.png" alt="Изображение" width="120px" height="120px">
+                </label>
+                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+            </td>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+
 
 
 

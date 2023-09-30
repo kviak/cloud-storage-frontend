@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AxiosService } from '../axios.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-content',
@@ -7,12 +8,15 @@ import { AxiosService } from '../axios.service';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent {
-	componentToShow: string = "welcome";
+	componentToShow: string = "login";
 
-	constructor(private axiosService: AxiosService) { }
-
-	showComponent(componentToShow: string): void {
-    this.componentToShow = componentToShow;
+	constructor(private axiosService: AxiosService) {
+    const jwtToken = this.axiosService.getAuthToken();
+    if (jwtToken) {
+      this.componentToShow="messages"
+    } else {
+      this.componentToShow="login"
+    }
   }
 
 	onLogin(input: any): void {
@@ -29,7 +33,7 @@ export class ContentComponent {
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
-		        this.componentToShow = "welcome";
+		        this.componentToShow = "login";
 		    }
 		);
 	}
@@ -45,12 +49,13 @@ export class ContentComponent {
 		        email: input.email
 		    }).then(
 		    response => {
-		        this.axiosService.setAuthToken(response.data.token);
-		        this.componentToShow = "messages";
+		        this.componentToShow = "login";
+            location.reload();
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
-		        this.componentToShow = "welcome";
+		        this.componentToShow = "login";
+            location.reload();
 		    }
 		);
 	}
