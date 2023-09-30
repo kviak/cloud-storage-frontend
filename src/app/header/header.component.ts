@@ -13,7 +13,7 @@ export class HeaderComponent {
   componentToShow: string = "login";
 
   constructor(private axiosService: AxiosService) {}
-  user: UserDto = new UserDto('User', 'goida');
+  user: UserDto = new UserDto('', '');
 
   ngOnInit(): void {
     this.axiosService.request(

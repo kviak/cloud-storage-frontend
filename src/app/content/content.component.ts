@@ -49,12 +49,13 @@ export class ContentComponent {
 		        email: input.email
 		    }).then(
 		    response => {
-		        this.axiosService.setAuthToken(response.data.token);
 		        this.componentToShow = "login";
+            location.reload();
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
-		        this.componentToShow = "registration";
+		        this.componentToShow = "login";
+            location.reload();
 		    }
 		);
 	}

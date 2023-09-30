@@ -91,6 +91,7 @@ export class AuthContentComponent {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
       this.selectedFile = inputElement.files[0] as File;
+      this.uploadFile()
     } else {
       this.selectedFile = null;
     }
