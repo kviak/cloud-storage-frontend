@@ -11,13 +11,12 @@
       <ng-container *ngFor="let item of packages; let i = index">
         <td>
           <div style="width: 140px; text-align: center; height: 140px; background: lightblue; border-radius: 24px">
-            <ng-container>
+            <ng-container *ngIf="item.packageName.endsWith('/')">
               <img src="assets/images/folder.png" alt="Image Icon" height="40px" width="40px">
             </ng-container>
             <div style="width: 130px; height: 40px;">
               <span style="max-width: 140px; max-height: 50px; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">{{ item.packageName }}</span>
             </div>
-
             <div style="width: 126px; height: 35px; background: white; border-radius: 24px; margin-top: 12px;">
               <img [src]="'assets/images/delete.png'" alt="Delete" (click)="deletePackage(item)" class="icon" height="25" width="25" style="cursor: pointer; float: left; margin-left: 10px; margin-top: 3px">
               <img [src]="'assets/images/download.png'" alt="Download" (click)="downloadPackage(item)" class="icon" height="28" width="28" style="cursor: pointer; float: right; margin-right: 3px; margin-top: 2px;">
@@ -25,6 +24,9 @@
             </div>
           </div>
         </td>
+        <ng-container *ngIf="(i + 1) % 5 === 0">
+          <tr><br></tr>
+        </ng-container>
       </ng-container>
       <td>
         <label for="fileInput" style="cursor: pointer;">
@@ -36,6 +38,8 @@
     </table>
   </div>
   </div>
+
+
 
   <div style="display: flex; align-items: center; margin-left: 250px;">
     <img src="assets/images/file.png" alt="Logo" height="40px" width="40px">

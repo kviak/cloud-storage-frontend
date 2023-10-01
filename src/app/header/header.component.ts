@@ -15,20 +15,6 @@ export class HeaderComponent {
   constructor(private axiosService: AxiosService) {}
   user: UserDto = new UserDto('', '');
 
-  ngOnInit(): void {
-    this.axiosService.request(
-      "GET",
-      "/user",
-      {}).then(
-      (response) => {
-        this.componentToShow="messages"
-        this.user = response.user.userName;
-        this.user = response.user.roles;
-      })
-  }
-
-
-
   goida(): void{
     this.axiosService.setAuthToken(null);
     location.reload();

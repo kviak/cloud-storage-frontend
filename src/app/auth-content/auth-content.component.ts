@@ -5,6 +5,7 @@ import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import {UserPackageDto} from "../dto/user.package.dto";
+import {UserDto} from "../dto/user.dto";
 
 
 @Component({
@@ -15,6 +16,7 @@ import {UserPackageDto} from "../dto/user.package.dto";
 export class AuthContentComponent {
   data: UserFileDto[] = [];
   packages: UserPackageDto[] = [];
+  user: UserDto = new UserDto('', '');
 
 
   constructor(private axiosService: AxiosService) {}
@@ -40,7 +42,17 @@ export class AuthContentComponent {
       "GET",
       "/folder",
       {}).then((response) => {
-        this.packages = response.packages;});
+        this.packages = response.data;});
+
+
+    this.axiosService.request(
+      "GET",
+      "/user",
+      {}).then(
+      (response) => {
+        this.user.userName = response.data.userName;
+        this.user.roles = response.data.roles;
+      })
   }
 
   async downloadFile(item :UserFileDto): Promise<void> {
@@ -128,7 +140,7 @@ export class AuthContentComponent {
   deletePackage(item: UserPackageDto) {
     this.axiosService.request(
       "DELETE",
-      `/file/${item.packageName}`,
+      `/folder/${item.packageName}`,
       {}
     )
       .then((response) => {
