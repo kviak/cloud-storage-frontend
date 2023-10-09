@@ -12,8 +12,19 @@ export class HeaderComponent {
 	@Input() logoSrc!: string;
   componentToShow: string = "login";
 
-  constructor(private axiosService: AxiosService) {}
   user: UserDto = new UserDto('', '');
+  constructor(private axiosService: AxiosService) {
+    this.axiosService.request(
+      "GET",
+      "/user",
+      {}).then(
+      (response) => {
+        this.user.userName = response.data;
+        // this.user.userName = response.data.userName;
+        // this.user.roles = response.data.roles;
+      })
+  }
+
 
   goida(): void{
     this.axiosService.setAuthToken(null);
