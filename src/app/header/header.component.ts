@@ -19,9 +19,8 @@ export class HeaderComponent {
       "/user",
       {}).then(
       (response) => {
-        this.user.userName = response.data;
-        // this.user.userName = response.data.userName;
-        // this.user.roles = response.data.roles;
+        this.user.userName = response.data.username;
+        this.user.roles = response.data.roles;
       })
   }
 

@@ -115,7 +115,8 @@ export class AuthContentComponent {
   }
 
   showFileInfo(item: any): void {
-    alert("Name: " + item.fileName + "\n" + "Size: " + item.fileSize);
+    const size: BigInt = BigInt(item.fileSize) / BigInt(1024);
+    alert("Name: " + item.fileName + "\nSize: " +size+ " kb");
   }
 
   deletePackage(item: UserPackageDto) {
@@ -134,6 +135,7 @@ export class AuthContentComponent {
   }
 
   showPackageInfo(item: UserPackageDto) {
-    alert("Name: " + item.packageName + "\nSize: " + item.packageSize + "\nLink: " + item.packageLink);
+    const size: BigInt = BigInt(item.packageSize) / BigInt(1024);
+    alert("Name: " + item.packageName + "\nSize: " +size+ " kb"  + "\nLink: " + item.packageLink);
   }
 }
