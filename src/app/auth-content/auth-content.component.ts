@@ -3,7 +3,6 @@ import { AxiosService } from '../axios.service';
 import {UserFileDto} from "../dto/user-file-dto";
 import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
-import Swal from 'sweetalert2';
 import {UserPackageDto} from "../dto/user.package.dto";
 import {UserDto} from "../dto/user.dto";
 
@@ -17,7 +16,6 @@ export class AuthContentComponent {
   data: UserFileDto[] = [];
   packages: UserPackageDto[] = [];
   user: UserDto = new UserDto('', '');
-
 
   constructor(private axiosService: AxiosService) {}
 
@@ -43,16 +41,6 @@ export class AuthContentComponent {
       "/folder",
       {}).then((response) => {
         this.packages = response.data;});
-
-
-    this.axiosService.request(
-      "GET",
-      "/user",
-      {}).then(
-      (response) => {
-        this.user.userName = response.data.userName;
-        this.user.roles = response.data.roles;
-      })
   }
 
   async downloadFile(item :UserFileDto): Promise<void> {
@@ -127,14 +115,8 @@ export class AuthContentComponent {
   }
 
   showFileInfo(item: any): void {
-    if (item.fileName) {
-      Swal.fire({
-        title: item.fileName,
-        text: `File Name: ${item.fileName}
-               File size: ${item.fileSize}`,
-        icon: 'info'
-      });
-    }
+    const size: BigInt = BigInt(item.fileSize) / BigInt(1024);
+    alert("Name: " + item.fileName + "\nSize: " +size+ " kb");
   }
 
   deletePackage(item: UserPackageDto) {
@@ -153,13 +135,7 @@ export class AuthContentComponent {
   }
 
   showPackageInfo(item: UserPackageDto) {
-    if (item.packageName) {
-      Swal.fire({
-        title: item.packageName,
-        text: `File Name: ${item.packageName}
-               File size: ${item.packageSize}`,
-        icon: 'info'
-      });
-    }
+    const size: BigInt = BigInt(item.packageSize) / BigInt(1024);
+    alert("Name: " + item.packageName + "\nSize: " +size+ " kb"  + "\nLink: " + item.packageLink);
   }
 }

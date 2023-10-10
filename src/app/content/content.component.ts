@@ -38,26 +38,25 @@ export class ContentComponent {
 		);
 	}
 
-	onRegister(input: any): void {
-		this.axiosService.request(
-		    "POST",
-		    "/registration",
-		    {
-		        username: input.username,
-		        password: input.password,
-            confirmPassword: input.confirmPassword,
-		        email: input.email
-		    }).then(
-		    response => {
-		        this.componentToShow = "login";
-            location.reload();
-		    }).catch(
-		    error => {
-		        this.axiosService.setAuthToken(null);
-		        this.componentToShow = "login";
-            location.reload();
-		    }
-		);
-	}
 
+  async onRegister(input: any): Promise<void> {
+    try {
+      const response = await this.axiosService.request(
+        "POST",
+        "/registration",
+        {
+          username: input.username,
+          password: input.password,
+          confirmPassword: input.confirmPassword,
+          email: input.email
+        }
+      );
+      this.componentToShow = "login";
+      location.reload();
+    } catch (error) {
+      this.axiosService.setAuthToken(null);
+      this.componentToShow = "login";
+      location.reload();
+    }
+  }
 }
