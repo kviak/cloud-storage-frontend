@@ -19,6 +19,12 @@ export class AuthContentComponent {
 
   constructor(private axiosService: AxiosService) {}
 
+
+  goida(): void{
+    this.axiosService.setAuthToken(null);
+    location.reload();
+  }
+
   ngOnInit(): void {
     this.axiosService.request(
         "GET",
@@ -26,6 +32,7 @@ export class AuthContentComponent {
         {}).then(
         (response) => {
             this.data = response.data;
+            this.preloadImages();
         }).catch(
         (error) => {
             if (error.response.status === 401) {
@@ -35,6 +42,15 @@ export class AuthContentComponent {
             }
         }
     );
+
+    this.axiosService.request(
+      "GET",
+      "/user",
+      {}).then(
+      (response) => {
+        this.user.userName = response.data.username;
+        this.user.roles = response.data.roles;
+      });
 
     this.axiosService.request(
       "GET",
@@ -70,6 +86,31 @@ export class AuthContentComponent {
       // Очищаем объект URL и удаляем ссылку
       window.URL.revokeObjectURL(url);
       a.remove();
+    } catch (error) {
+      console.error('Произошла ошибка при скачивании файла:', error);
+    }
+  }
+
+  async preloadImages() {
+    for (const item of this.data) {
+      if (item.fileName.endsWith('.jpg') || item.fileName.endsWith('.png') || item.fileName.endsWith('.jpeg')) {
+        await this.loadImage(item);
+      }
+    }
+  }
+
+  async loadImage(item: UserFileDto): Promise<void> {
+    try {
+      const response = await axios.get(environment.apiUrl + "/file/" + item.fileName, {
+        responseType: 'arraybuffer',
+        headers: {
+          'Authorization': `Bearer ${this.axiosService.getAuthToken()}`
+        }
+      });
+      const blob = new Blob([response.data]);
+      const blobUrl = URL.createObjectURL(blob);
+      const imageElement = document.getElementById(item.fileName) as HTMLImageElement;
+      imageElement.src = blobUrl;
     } catch (error) {
       console.error('Произошла ошибка при скачивании файла:', error);
     }
@@ -137,5 +178,19 @@ export class AuthContentComponent {
   showPackageInfo(item: UserPackageDto) {
     const size: BigInt = BigInt(item.packageSize) / BigInt(1024);
     alert("Name: " + item.packageName + "\nSize: " +size+ " kb"  + "\nLink: " + item.packageLink);
+  }
+  showUserInfo = false;
+
+  userInfoTimer: any;
+
+  userInfo() {
+    // Очищаем таймер, если он уже запущен
+    clearTimeout(this.userInfoTimer);
+
+    this.showUserInfo = true;
+    // Устанавливаем таймер на скрытие информации о пользователе после 2 секунд
+    this.userInfoTimer = setTimeout(() => {
+      this.showUserInfo = false;
+    }, 3000);
   }
 }
