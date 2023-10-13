@@ -193,4 +193,13 @@ export class AuthContentComponent {
       this.showUserInfo = false;
     }, 3000);
   }
+
+  setVip() {
+    this.axiosService.request(
+      "POST",
+      `/vip`,
+      {}
+    )
+      .then((response) => {console.log("Role changed on VIP!")})
+  }
 }
