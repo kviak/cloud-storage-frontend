@@ -156,9 +156,20 @@ export class AuthContentComponent {
     }
   }
 
-  showFileInfo(item: any): void {
+  showFileInfo(item: any) {
     const size: BigInt = BigInt(item.fileSize) / BigInt(1024);
-    alert("Name: " + item.fileName + "\nSize: " +size+ " kb");
+    console.log(item.shareLink);
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {
+        Name: item.fileName,
+        Size: size,
+        ShareLink: item.shareLink
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
   }
 
   deletePackage(item: UserPackageDto) {
