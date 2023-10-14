@@ -5,7 +5,8 @@ import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
 import {UserPackageDto} from "../dto/user.package.dto";
 import {UserDto} from "../dto/user.dto";
-
+import { MatDialog } from '@angular/material/dialog';
+import { ModalDialogComponent } from '../modal-dialog/modal-dialog.component';
 
 @Component({
   selector: 'app-auth-content',
@@ -17,7 +18,12 @@ export class AuthContentComponent {
   packages: UserPackageDto[] = [];
   user: UserDto = new UserDto('', '');
 
-  constructor(private axiosService: AxiosService) {}
+  constructor(private axiosService: AxiosService, public dialog: MatDialog) {}
+
+  goida(): void{
+    this.axiosService.setAuthToken(null);
+    location.reload();
+  }
 
   ngOnInit(): void {
     this.axiosService.request(
@@ -26,6 +32,7 @@ export class AuthContentComponent {
         {}).then(
         (response) => {
             this.data = response.data;
+            this.preloadImages();
         }).catch(
         (error) => {
             if (error.response.status === 401) {
@@ -35,6 +42,15 @@ export class AuthContentComponent {
             }
         }
     );
+
+    this.axiosService.request(
+      "GET",
+      "/user",
+      {}).then(
+      (response) => {
+        this.user.userName = response.data.username;
+        this.user.roles = response.data.roles;
+      });
 
     this.axiosService.request(
       "GET",
@@ -75,6 +91,31 @@ export class AuthContentComponent {
     }
   }
 
+  async preloadImages() {
+    for (const item of this.data) {
+      if (item.fileName.endsWith('.jpg') || item.fileName.endsWith('.png') || item.fileName.endsWith('.jpeg')) {
+        await this.loadImage(item);
+      }
+    }
+  }
+
+  async loadImage(item: UserFileDto): Promise<void> {
+    try {
+      const response = await axios.get(environment.apiUrl + "/file/" + item.fileName, {
+        responseType: 'arraybuffer',
+        headers: {
+          'Authorization': `Bearer ${this.axiosService.getAuthToken()}`
+        }
+      });
+      const blob = new Blob([response.data]);
+      const blobUrl = URL.createObjectURL(blob);
+      const imageElement = document.getElementById(item.fileName) as HTMLImageElement;
+      imageElement.src = blobUrl;
+    } catch (error) {
+      console.error('Произошла ошибка при скачивании файла:', error);
+    }
+  }
+
   deleteFile(item: UserFileDto): void {
     this.axiosService.request(
       "DELETE",
@@ -87,6 +128,7 @@ export class AuthContentComponent {
   }
 
   selectedFile: File | null = null;
+
   onFileSelected(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
@@ -137,5 +179,55 @@ export class AuthContentComponent {
   showPackageInfo(item: UserPackageDto) {
     const size: BigInt = BigInt(item.packageSize) / BigInt(1024);
     alert("Name: " + item.packageName + "\nSize: " +size+ " kb"  + "\nLink: " + item.packageLink);
+  }
+
+  setVip() {
+    this.axiosService.request(
+      "POST",
+      `/vip`,
+      {}
+    )
+      .then((response) => {console.log("Role changed on VIP!")})
+  }
+
+  openSettings() {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
+  }
+
+  openRecycle() {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
+  }
+
+  openArchive() {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
+  }
+
+  openModal(user: UserDto) {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {userName: user.userName,
+        roles: user.roles}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
   }
 }

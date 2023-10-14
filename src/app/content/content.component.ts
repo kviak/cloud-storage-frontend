@@ -30,8 +30,10 @@ export class ContentComponent {
 		    response => {
 		        this.axiosService.setAuthToken(response.data.token);
 		        this.componentToShow = "messages";
-		    }).catch(
-		    error => {
+		    }).catch(error => {
+            const label = document.getElementById('label1') as HTMLLabelElement;
+            label.textContent = error.response.data.message;
+            console.log(error.response.data.message)
 		        this.axiosService.setAuthToken(null);
 		        this.componentToShow = "login";
 		    }
