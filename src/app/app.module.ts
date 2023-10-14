@@ -12,6 +12,8 @@ import { ContentComponent } from './content/content.component';
 
 import { AxiosService } from './axios.service';
 import {NgOptimizedImage} from "@angular/common";
+import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import {NgOptimizedImage} from "@angular/common";
     LoginFormComponent,
     WelcomeContentComponent,
     AuthContentComponent,
-    ContentComponent
+    ContentComponent,
+    ModalDialogComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FormsModule,
+        MatDialogModule,
         NgOptimizedImage
     ],
   providers: [AxiosService],

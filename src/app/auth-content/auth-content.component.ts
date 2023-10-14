@@ -5,7 +5,8 @@ import { environment } from 'src/app/enviroment/enviroment';
 import axios from "axios";
 import {UserPackageDto} from "../dto/user.package.dto";
 import {UserDto} from "../dto/user.dto";
-
+import { MatDialog } from '@angular/material/dialog';
+import { ModalDialogComponent } from '../modal-dialog/modal-dialog.component';
 
 @Component({
   selector: 'app-auth-content',
@@ -17,8 +18,7 @@ export class AuthContentComponent {
   packages: UserPackageDto[] = [];
   user: UserDto = new UserDto('', '');
 
-  constructor(private axiosService: AxiosService) {}
-
+  constructor(private axiosService: AxiosService, public dialog: MatDialog) {}
 
   goida(): void{
     this.axiosService.setAuthToken(null);
@@ -128,6 +128,7 @@ export class AuthContentComponent {
   }
 
   selectedFile: File | null = null;
+
   onFileSelected(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files && inputElement.files.length > 0) {
@@ -179,20 +180,6 @@ export class AuthContentComponent {
     const size: BigInt = BigInt(item.packageSize) / BigInt(1024);
     alert("Name: " + item.packageName + "\nSize: " +size+ " kb"  + "\nLink: " + item.packageLink);
   }
-  showUserInfo = false;
-
-  userInfoTimer: any;
-
-  userInfo() {
-    // Очищаем таймер, если он уже запущен
-    clearTimeout(this.userInfoTimer);
-
-    this.showUserInfo = true;
-    // Устанавливаем таймер на скрытие информации о пользователе после 2 секунд
-    this.userInfoTimer = setTimeout(() => {
-      this.showUserInfo = false;
-    }, 3000);
-  }
 
   setVip() {
     this.axiosService.request(
@@ -201,5 +188,46 @@ export class AuthContentComponent {
       {}
     )
       .then((response) => {console.log("Role changed on VIP!")})
+  }
+
+  openSettings() {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
+  }
+
+  openRecycle() {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
+  }
+
+  openArchive() {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
+  }
+
+  openModal(user: UserDto) {
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: {userName: user.userName,
+        roles: user.roles}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Этот блок выполняется после закрытия модального окна
+    });
   }
 }
