@@ -1,11 +1,11 @@
 export class UserFileDto {
   fileName: string;
-  linkFile: string;
+  shareLink: string;
   fileSize: bigint;
 
-  constructor(fileName: string, linkFile: string, fileSize: bigint) {
+  constructor(fileName: string, shareLink: string, fileSize: bigint) {
+    this.shareLink = shareLink;
     this.fileName = fileName;
-    this.linkFile = linkFile;
     this.fileSize = fileSize;
   }
 }

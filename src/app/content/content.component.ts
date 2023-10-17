@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AxiosService } from '../axios.service';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-content',
@@ -8,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent {
+  title: string = 'frontend';
 	componentToShow: string = "login";
 
 	constructor(private axiosService: AxiosService) {

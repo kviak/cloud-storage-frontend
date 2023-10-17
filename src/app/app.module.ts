@@ -14,6 +14,7 @@ import { AxiosService } from './axios.service';
 import {NgOptimizedImage} from "@angular/common";
 import { ModalDialogComponent } from './modal-dialog/modal-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { ShareFilePageComponent } from './share-file-page/share-file-page.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     WelcomeContentComponent,
     AuthContentComponent,
     ContentComponent,
-    ModalDialogComponent
+    ModalDialogComponent,
+    ShareFilePageComponent
   ],
     imports: [
         BrowserModule,

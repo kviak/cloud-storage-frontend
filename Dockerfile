@@ -1,4 +1,3 @@
-#STAGE 1
 FROM node:latest AS anular
 
 WORKDIR /app
