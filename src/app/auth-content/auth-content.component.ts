@@ -40,6 +40,7 @@ export class AuthContentComponent {
             } else {
                 this.data = error.response.code;
             }
+            location.reload();
         }
     );
 
